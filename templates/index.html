@@ -1,0 +1,145 @@
+{% extends 'anonbase.html' %}
+{% load static %}
+
+{% block title %}
+    Main Page
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="title">
+        Welcome to MoneyTracker, the personal finance application.
+    </h1>
+    <h1 class="subtitle">What is it?</h1>
+    <div class="content">
+        <p>
+            MoneyTracker allows you to track your expenses and figure out what part of your money goes
+            where. It
+            does that by allowing you to create multiple virtual accounts which can be used to group related
+            transactions, tag transactions and create charts to visualize your income and expenditures.
+            <a href="/accounts/login">Go In</a> or <a href="{% url 'registration_register' %}">register</a>
+            if
+            you don't
+            have an account.
+        </p>
+    </div>
+
+    <h1 class="subtitle">Why another one?</h1>
+    <div class="content">
+        <p>
+            I had a need to track my expenses 14 years ago and none of the existing services supported
+            Lebanese banks nor did they support the mix of payment types where we use both cards and cash in
+            multiple currencies. So I started manually tracking my expenses in a text file that then morphed
+            into a spreadsheet that then morphed into a desktop application that morphed into this service.
+        </p>
+        <p>
+            Many iterations later, MoneyTracker has morphed into a service that consumes bank statement CSV
+            exports from a couple of Australian banks but still supports a bunch of manual data entry
+            methods due to its legacy. Only ING and CBA banks are supported right now but more will be added
+            based on demand.
+        </p>
+    </div>
+
+    <h1 class="subtitle">Can I try it first?</h1>
+    <p>
+        If you'd like to check out the service before committing to a registration, you can login in with a demo
+        account using the following information:
+    </p>
+    <ul>
+        <li>email: demo@example.com</li>
+        <li>password: demodemo</li>
+    </ul>
+    <br/>
+    <h1 class="subtitle">How much does it cost?</h1>
+    <p>
+        For the moment, this service is free to use.
+    </p>
+
+    <hr/>
+
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Multiple Accounts
+                    </p>
+                </header>
+                <div class="card-image">
+                    <figure class="image">
+                        <img src="{% static "images/account_list.png" %}" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        <p>Create multiple accounts to separate payments.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Tagging Transactions
+                    </p>
+                </header>
+                <div class="card-image">
+                    <figure class="image">
+                        <img src="{% static "images/add_trans.png" %}" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        <p>Tag transactions with multiple keywords to group them. Tagging transactions will help you
+                           later in listing specific categories of transactions or chart them.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Recurring Transactions
+                    </p>
+                </header>
+                <div class="card-image">
+                    <figure class="image">
+                        <img src="{% static "images/add_rtrans.png" %}" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        <p>Add daily, weekly, monthly or yearly recurring transactions to apply to an account you
+                           choose.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Transaction Charting
+                    </p>
+                </header>
+                <div class="card-image">
+                    <figure class="image">
+                        <img src="{% static "images/trans_chart.png" %}" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="content">
+                        <p>Daily, weekly and monthly charts show you beautiful visualizations of your transactions. You
+                           can also filter the list of transactions via time period and/or tag.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

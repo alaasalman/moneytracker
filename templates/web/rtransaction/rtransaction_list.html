@@ -1,0 +1,75 @@
+{% extends 'web/base.html' %}
+{% load utiltags %}
+{% load static %}
+
+{% block title %}
+  Recurring Transaction Listing
+{% endblock %}
+
+
+{% block content %}
+    <div class="content-box-content">
+        <div>
+            <table class="table is-striped is-fullwidth">
+                <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        <div class="is-pulled-right">
+                            <a href="{% url 'rtransaction_add' %}"><span class="fas fa-plus-square"></span></a>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="4">
+                      {% show_pager %}
+                    </td>
+                </tr>
+                </tfoot>
+                <tbody>
+                {% for trans in recurring_transaction_list %}
+                    <tr>
+                        <td>
+                          {{ trans.date }}
+                        </td>
+                        <td>
+                          {{ trans.amount }}
+                        </td>
+                        <td>
+                          {{ trans.description }}
+                        </td>
+                        <td class="is-pulled-right">
+                            <a href='{% url 'rtransaction_delete' trans.id %}'>
+                                <span class="icon">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                            </a>
+                            <a href='{% url 'rtransaction_edit' trans.id %}'>
+                                <span class="icon">
+                            <i class="fas fa-edit"></i>
+                        </span>
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td>
+                            No recurring transactions yet. Care to <a href='{% url 'rtransaction_add' %}'>add</a> one.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

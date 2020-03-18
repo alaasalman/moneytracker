@@ -1,0 +1,26 @@
+# Django dev settings for moneytracker project.
+from .settings import *
+
+DEBUG = True
+
+# Start:Secrets #
+SECRET_KEY = '<YOUR_KEY>'
+
+DATABASES = {
+    'default': {
+        'NAME': '<DB_NAME>',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': '<DB_HOST>',
+        'USER': '<DB_UNAME>',
+        'PASSWORD': '<DB_PASS>'
+    }
+}
+
+ANYMAIL = {
+    'SENDGRID_API_KEY': ''
+}
+
+
+# End:Secrets #
+
+ALLOWED_HOSTS = ['*']

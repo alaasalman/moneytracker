@@ -1,0 +1,21 @@
+{% extends 'web/base.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block title %}
+  Add Recurring Transaction
+{% endblock %}
+
+{% block extrajs %}
+  {% render_bundle 'vcomponents' %}
+{% endblock extrajs %}
+
+{% block content %}
+    <form method='post' class="form-horizontal">
+      {% csrf_token %}
+      {% include "generic_snippets/form_snippet.html" with form=form %}
+
+        <div class="form-actions">
+            <input class="button" type='submit' value='Add'/>
+        </div>
+    </form>
+{% endblock content %}

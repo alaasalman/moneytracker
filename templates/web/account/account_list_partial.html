@@ -1,0 +1,60 @@
+{% load utiltags %}
+{% load static %}
+
+<div class="content-box-content">
+    <table class="table is-striped is-fullwidth">
+        <thead>
+        <tr>
+            <th>
+                Account
+            </th>
+            <th>
+                Balance
+            </th>
+            <th>Last Transaction</th>
+            <th>
+                <div class="is-pulled-right">
+                    <a href="{% url 'account_add' %}"><span class="fas fa-plus-square"></span></a>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td colspan="6">
+              {% show_pager %}
+            </td>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for acct in page_obj.object_list %}
+            <tr>
+                <td>
+                    <a href='{% url 'transaction_list' acct.id %}'>{{ acct.name }}</a>
+                </td>
+                <td>
+                  {{ acct.balance|colorize_amount:display_currency_sign }}
+                </td>
+                <td>
+                  {{ acct.last_transaction_date }}
+                </td>
+                <td class="is-pulled-right">
+
+                    <a href='{% url 'account_delete' acct.id %}'>
+                        <span class="icon"><i class="fas fa-trash"></i></span>
+                    </a>
+                    <a href='{% url 'account_edit' acct.id %}'>
+                        <span class="icon"><i class="fas fa-edit"></i></span>
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>
+                    No accounts defined yet. Care to <a href='{% url 'account_add' %}'>add</a> one?
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

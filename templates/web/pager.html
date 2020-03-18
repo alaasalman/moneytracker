@@ -1,0 +1,23 @@
+<div class="pull-right">
+    <ul class="pagination">
+      {% if firstlink %}
+          <li><a href="?{{ firstlink }}" title="First Page">&laquo; First</a></li>
+      {% endif %}
+
+      {% if page_obj.has_previous %}
+          <li><a href="?{{ prevlink }}" title="Previous Page">&lt; Previous</a></li>
+      {% endif %}
+
+      {% for link in pagelinks %}
+          <li><a href="?{{ link.href }}" title="{{ link.title }}" class="{{ link.class }}">{{ link.value }}</a></li>
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+          <li><a href="?{{ nextlink }}" title="Next Page">Next &gt;</a></li>
+      {% endif %}
+
+      {% if lastlink %}
+          <li><a href="?{{ lastlink }}" title="Last Page">Last &raquo;</a></li>
+      {% endif %}
+    </ul>
+</div>

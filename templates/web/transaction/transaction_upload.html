@@ -1,0 +1,141 @@
+{% extends 'web/base.html' %}
+{% load utiltags %}
+{% load static widget_tweaks %}
+{% load render_bundle from webpack_loader %}
+
+{% block title %}
+  Upload Transactions
+{% endblock %}
+
+{% block extracss %}
+
+{% endblock extracss %}
+
+{% block extrajs %}
+  {% render_bundle 'vcomponents' %}
+
+    <script>
+      var file = document.getElementById('csvfile');
+      file.onchange = function () {
+        if (file.files.length > 0) {
+          document.getElementById('csvfilename').innerHTML = file.files[0].name;
+        }
+      };
+    </script>
+{% endblock extrajs %}
+
+{% block content %}
+    <form method='post' enctype="multipart/form-data">
+      {% csrf_token %}
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Export File</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="file has-name">
+                        <label class="file-label">
+                            <input class="file-input" type="file" name="csvfile" id="csvfile">
+                            <span class="file-cta">
+                                <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Choose a file…
+                  </span>
+                </span>
+                            <span class="file-name" id="csvfilename">
+                    CSV File
+                </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Upload Type</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <div class="select">
+                          {{ form.uploadtype }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Account</label>
+            </div>
+            <div class="field-body">
+                <div class="select">
+                  {{ form.account }}
+                </div>
+            </div>
+        </div>
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="button" type='submit' value='Upload'/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div>
+        <table class="table is-striped is-fullwidth">
+            <thead>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                </th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td colspan="3">
+                  {% show_pager %}
+                </td>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for upload_file in uploaded_file_list %}
+                <tr>
+                    <td>
+                      {{ upload_file.created_at }}
+                    </td>
+                    <td>
+                      {{ upload_file.processed }}
+                    </td>
+                    <td class="is-pulled-right">
+                        <a href='{% url 'transaction_upload_delete' upload_file.id %}'>
+                        <span class="icon">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td>
+                        No upload files yet.
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends 'web/base.html' %}
+
+{% block title %}
+  Delete Uploaded Transactions
+{% endblock %}
+
+{% block content %}
+    <p>Are you sure you want to delete the uploaded files and created transactions?</p>
+    <div>
+        <form method="post">
+          {% csrf_token %}
+            <input class="button is-danger is-pulled-left" type="submit" value="Yes"/>
+        </form>
+
+        <form method="get" action="{{ returnurl }}">
+            <input class="button" type="submit" value="No"/>
+        </form>
+    </div>
+{% endblock content %}

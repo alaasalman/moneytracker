@@ -1,0 +1,116 @@
+{% extends 'web/base.html' %}
+{% load utiltags %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block title %}
+  Transaction Listing
+{% endblock %}
+
+{% block extracss %}
+{% endblock extracss %}
+
+{% block extrajs %}
+  {% render_bundle 'filter' %}
+  {% render_bundle 'vcomponents' %}
+
+    <script type="text/javascript" src="{% static "scripts/mt.js" %}"></script>
+    <script type="text/javascript">
+    </script>
+{% endblock extrajs %}
+
+{% block content %}
+    <div id="transfilter">
+        <transaction-filter
+                from-date="{{ from_date }}"
+                to-date="{{ to_date }}"
+                account-tags-url="{% url 'api:api-tag-list' %}"
+                :tags-value="{{ tags__have }}">
+        </transaction-filter>
+    </div>
+
+    <div>
+        <table class="table is-striped is-fullwidth">
+            <thead>
+            <tr>
+                <th class="vue-header-sorter1">
+                    <header-sorter
+                            sort-field="date"
+                            sort-field-display="Date">
+                    </header-sorter>
+                </th>
+                <th class="vue-header-sorter2">
+                    <header-sorter
+                            sort-field="amount"
+                            sort-field-display="Amount">
+                    </header-sorter>
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    <!-- tags -->
+                </th>
+                <th>
+                    <div class="is-pulled-right">
+                        <a href="{% url 'transaction_add' %}"><span class="icon"><i
+                                class="fa fa-plus-square"></i></span></a>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td>
+                    <span>Balance: {{ cumulative_balance|colorize_amount:display_currency_sign }}</span>
+                </td>
+                <td colspan="5">
+                  {% show_pager %}
+                </td>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for trans in transaction_list %}
+                <tr>
+                    <td>
+                      {{ trans.date }}
+                    </td>
+                    <td>
+                      {{ trans.amount|colorize_amount:trans.currency.sign }}
+                    </td>
+                    <td>
+                      {{ trans.description }}
+                    </td>
+                    <td>
+                      {% if trans.tags.count != 0 %}
+                          <div class="tags">
+                            {% for tag in trans.tags.all %}
+                                <span class="tag">{{ tag.name }}</span>&nbsp;
+                            {% endfor %}
+                          </div>
+                      {% endif %}
+                    </td>
+                    <td class="is-pulled-right">
+                        <a href='{% url 'transaction_delete' trans.id %}'>
+                            <span class="icon">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                        </a>
+                        <a href='{% url 'transaction_edit' trans.id %}'>
+                            <span class="icon">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td>
+                        No transactions yet. Care to <a href='{% url 'transaction_add' %}'>add</a> one?
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

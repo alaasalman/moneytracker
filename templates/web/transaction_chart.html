@@ -1,0 +1,38 @@
+{% extends 'web/base.html' %}
+{% load utiltags %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block title %}
+  Expenses Chart
+{% endblock %}
+
+{% block extracss %}
+{% endblock extracss %}
+
+{% block extrajs %}
+  {% render_bundle 'filter' %}
+  {% render_bundle 'vcomponents' %}
+
+    <script type="text/javascript" src="{% static "scripts/mt.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="transfilter">
+        <transaction-filter
+                from-date="{{ from_date }}"
+                to-date="{{ to_date }}"
+                account-tags-url="{% url 'api:api-tag-list' %}"
+                :tags-value="{{ tags__have }}">
+        </transaction-filter>
+    </div>
+    <div id="vue-chart-container">
+        <transaction-chart
+                monthly-url="{% url 'api:transaction-chart-data-monthly' %}"
+                yearly-url="{% url 'api:transaction-chart-data-yearly' %}"
+                pie-url="{% url 'api:transaction-chart-data-pie' %}"
+                from-date="{{ from_date }}"
+                to-date="{{ to_date }}">
+        </transaction-chart>
+    </div>
+{% endblock content %}

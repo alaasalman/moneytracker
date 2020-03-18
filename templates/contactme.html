@@ -1,0 +1,21 @@
+{% extends 'anonbase.html' %}
+
+{% block title %}
+  About Page
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <form method='post' class="form-horizontal">
+              {% csrf_token %}
+
+              {% include "generic_snippets/form_snippet.html" with form=form %}
+
+                <div class="form-actions">
+                    <input class="button" type='submit' value='Send'/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

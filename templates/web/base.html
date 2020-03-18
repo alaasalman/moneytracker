@@ -1,0 +1,141 @@
+{% load utiltags %}
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% render_bundle 'main' %}
+
+    <title>{% block title %}{% endblock title %} :: MoneyTracker</title>
+
+    <link rel="stylesheet" href="{% static  'css/bulmaswatch.min.css' %}">
+    <link rel="stylesheet" href="{% static  'css/mt_overrides.css' %}">
+  {% block extracss %}{% endblock extracss %}
+</head>
+<body>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{% url 'home' %}">
+            MoneyTracker
+          {#            <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox"#}
+          {#                 width="112" height="28">#}
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item {% highlight_if_active 'dashboard' %}" href="{% url 'dashboard' %}">
+                <span class="icon"><i class="fas fa-home"></i></span>
+                <span>Home</span>
+            </a>
+
+            <a class="navbar-item {% highlight_if_active 'account_list' %}" href="{% url 'account_list' %}">
+                <span class="icon"><i class="fas fa-book"></i></span>
+                <span>Accounts</span>
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    <span class="icon"><i class="fas fa-money-bill-alt"></i></span>
+                    <span>Transactions</span>
+                </a>
+
+                <div class="navbar-dropdown is-boxed">
+                    <a class="navbar-item {% highlight_if_active 'transaction_list_all' %}"
+                       href="{% url 'transaction_list_all' %}">
+                        <span class="icon"><i class="fa fa-list"></i></span>
+                        <span>Transaction List</span>
+                    </a>
+                    <a class="navbar-item {% highlight_if_active 'transaction-upload' %}"
+                       href="{% url 'transaction-upload' %}">
+                        <span class="icon"><i class="fa fa-upload"></i></span>
+                        <span>Transaction Upload</span>
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item {% highlight_if_active 'transaction_chart' %}" href="{% url 'transaction_chart' %}">
+                <span class="icon"><i class="fa fa-chart-area"></i></span>
+                <span>Charts</span>
+            </a>
+            <a class="navbar-item {% highlight_if_active 'rtransaction_list' %}" href="{% url 'rtransaction_list' %}">
+                <span class="icon"><i class="fa fa-redo"></i></span>
+                <span>Recurring Transactions</span>
+            </a>
+            <a class="navbar-item {% highlight_if_active 'tag_list' %}" href="{% url 'tag_list' %}">
+                <span class="icon"><i class="fa fa-tags"></i></span>
+                <span>Tags</span>
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <a class="navbar-item" href="{% url 'contactme' %}">Contact</a>
+          {% if user.is_authenticated %}
+              <div class="navbar-item has-dropdown is-hoverable">
+                  <a class="navbar-link">
+                      <i class="icon-user"></i>{{ user.first_name }} <span
+                          class="caret"></span>
+                  </a>
+                  <div class="navbar-dropdown is-boxed">
+                      <a class="navbar-item" href="{% url 'auth_logout' %}">Sign Out</a>
+                  </div>
+              </div>
+          {% endif %}
+        </div>
+    </div>
+</nav>
+
+<section class="section">
+    <div class="container">
+      {% if messages %}
+        {% for message in messages %}
+            <div class="notification is-{{ message.tags }}">
+                <button class="delete"></button>
+              {{ message }}
+            </div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}
+      {% endblock content %}
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="content has-text-centered">
+            <p>
+                <small>
+                    &#169; Copyright 2018 | Powered by the giant brain of <a href="http://codedemigod.com">Alaa
+                                                                                                           Salman</a>.
+                    The website content
+                    is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>..
+                </small>
+            </p>
+        </div>
+    </div>
+</footer>
+{% block extrajs %}{% endblock extrajs %}
+{% if USE_GOOGLE_ANALYTICS %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37953963-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag () {dataLayer.push(arguments);}
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-37953963-1');
+    </script>
+{% endif %}
+</body>
+</html>

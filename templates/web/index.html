@@ -1,0 +1,31 @@
+{% extends 'web/base.html' %}
+{% load utiltags %}
+
+{% block title %}
+  Index
+{% endblock %}
+
+{% block content %}
+    <h1 class="title">Welcome {{ user.first_name }}</h1>
+
+    <h4>This month you've:</h4>
+    <table class="table">
+        <tr>
+            <td>Spent:</td>
+            <td>{{ total_spent|colorize_amount:display_currency_sign }}</td>
+        </tr>
+        <tr>
+            <td>Made:</td>
+            <td>{{ total_made|colorize_amount:display_currency_sign }}</td>
+        </tr>
+    </table>
+    <h4>Here's the breakdown:</h4>
+    <table class="table">
+      {% for tag, total in tag_total_dict.items %}
+          <tr>
+              <td>{{ tag.name }}</td>
+              <td>{{ total|colorize_amount:display_currency_sign }}</td>
+          </tr>
+      {% endfor %}
+    </table>
+{% endblock content %}

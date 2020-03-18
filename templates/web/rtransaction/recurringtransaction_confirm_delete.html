@@ -1,0 +1,19 @@
+{% extends 'web/base.html' %}
+
+{% block title %}
+  Delete Recurring Transaction
+{% endblock %}
+
+
+{% block content %}
+    <p>Are you sure you want to delete this recurring transaction?</p>
+    <div>
+        <form method='post' style='float: left'>
+          {% csrf_token %}
+            <input class="button" type='submit' value='Yes'/>
+        </form>
+        <form method='get' action='{{ returnurl }}'>
+            <input class="button" type='submit' value='No'/>
+        </form>
+    </div>
+{% endblock content %}

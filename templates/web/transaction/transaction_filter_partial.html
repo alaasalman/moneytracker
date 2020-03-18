@@ -1,0 +1,106 @@
+<div class="card">
+    <form id="filterform" v-on:submit.prevent="onSubmit">
+        <header class="card-header">
+            <p class="card-header-title">
+                Filter
+            </p>
+        </header>
+        <div class="card-content">
+            <div class="field is-horizontal is-grouped">
+                <div class="field-label is-small">
+                    <label class="label">Account</label>
+                </div>
+                <div class="field-body">
+                    <div class="control">
+                        <div class="select is-small">
+                            <select id='account' name='account'>
+                                <option value=''>--</option>
+                              {% for acct in accounts %}
+                                {% ifequal account acct %}
+                                    <option value='{{ acct.id }}' selected>{{ acct.name }}</option>
+                                {% else %}
+                                    <option value='{{ acct.id }}'>{{ acct.name }}</option>
+                                {% endifequal %}
+                              {% empty %}
+                                  None
+                              {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field-label is-small">
+                        <label class="label">Between</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="control">
+                            <input type="text" id="from_date" name="from_date" class="input is-small"
+                                   value="{{ from_date }}"
+                                   data-date-format="yyyy-mm-dd" data-date="{{ from_date }}" data-date-autoclose="true"
+                                   data-date-todayHighlight="true"/>
+                            <input type="text" id="to_date" name="to_date" class="input" value="{{ to_date }}"
+                                   data-date-format="yyyy-mm-dd"
+                                   data-date="{{ to_date }}" data-date-autoclose="true"
+                                   data-date-todayHighlight="true"/>
+                        </div>
+                    </div>
+                    <div class="field-label is-normal">
+                        <label class="label">Tag</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="control">
+                            <div class="select">
+                                <select id="tag" name="tag">
+                                    <option value=''>--</option>
+                                  {% for tg in tags %}
+                                    {% ifequal tg tag %}
+                                        <option value='{{ tag }}' selected>{{ tag }}</option>
+                                    {% else %}
+                                        <option value='{{ tg }}'>{{ tg }}</option>
+                                    {% endifequal %}
+                                  {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="button" v-on:click.prevent="addRule">Add Rule</button>
+            </div>
+        </div>
+
+        <div>
+            <ul class="list-group">
+                <li v-for="rule in ruleset" class="list-group-item">
+                    <label for="rule">Rule</label>
+                    <select id="rule" name="rule" class="input-sm" v-model="rule.name">
+                        <option value="">--</option>
+                        <option value="amount_gte">Amount >=
+                        </option>
+                        <option value="amount_lte">Amount <=
+                        </option>
+                        <option value="description_has">
+                            Description Has
+                        </option>
+                        <option value="tag_isnot">Tag IsNot
+                        </option>
+                        <option value="description_hasnot">
+                            Description HasNot
+                        </option>
+                    </select>
+                    <input type="text" id="rule_value" name="rule_value" class="input-sm"
+                           v-model="rule.value">
+                    <span class="fa fa-minus-circle fa-lg" v-on:click.prevent="removeRule(rule.id)"></span>
+                </li>
+            </ul>
+        </div>
+
+        <footer class="card-footer">
+            <input type="submit" value="Filter" class="button">
+        </footer>
+        <input type="hidden" name="sortby" id="sortby" value="{{ sortby|default_if_none:"date" }}">
+        <input type="hidden" name="sortbydirection" id="sortbydirection"
+               value="{{ sortbydirection|default_if_none:"desc" }}">
+    </form>
+</div>
+
+
+
+

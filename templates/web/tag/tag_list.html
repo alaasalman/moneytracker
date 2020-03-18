@@ -1,0 +1,65 @@
+{% extends 'web/base.html' %}
+{% load utiltags %}
+{% load static %}
+
+{% block title %}
+  Tag Listing
+{% endblock %}
+
+{% block content %}
+    <div>
+        <div>
+            <table class="table is-striped is-fullwidth">
+                <thead>
+                <tr>
+                    <th>
+                        Tag
+                    </th>
+                    <th>
+                        <div class="is-pulled-right">
+                            <a href="{% url 'tag_add' %}">
+                                <span class="icon"><i
+                                    class="fa fa-plus-square"></i></span>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                      {% show_pager %}
+                    </td>
+                </tr>
+                </tfoot>
+                <tbody>
+                {% for tag in tag_list %}
+                    <tr>
+                        <td>
+                          {{ tag.name }}
+                        </td>
+                        <td class="is-pulled-right">
+                            <a href='{% url 'tag_delete' tag.id %}'>
+                            <span class="icon">
+                                <i class="fas fa-trash"></i>
+                            </span>
+                            </a>
+                            <a href='{% url 'tag_edit' tag.id %}'>
+                            <span class="icon">
+                                <i class="fas fa-edit"></i>
+                            </span>
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td>
+                            No tags yet. They get created when you create transactions.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

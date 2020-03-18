@@ -1,0 +1,35 @@
+{% extends 'anonbase.html' %}
+
+{% block title %}
+  About Page
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <ul>
+                <li>What am I spending my money on?</li>
+                <li>How can I optimize my spending to save?</li>
+            </ul>
+            <p>
+                MoneyTracker is a personal finance application that tries to help you in answering the seemingly simple
+                questions above.
+            </p>
+            <p>
+                The idea of this project occurred to me after I started wondering how I spend my money. So I started to
+                record payments in a spreadsheet and then turned to using wxbanker which is a simple personal finance
+                desktop application. But then as my needs changed, I decided to write my own.
+            </p>
+            <p>
+                What powers this site:
+            <ul>
+                <li>Django</li>
+                <li>Gunicorn</li>
+                <li>Nginx</li>
+                <li>Postgresql</li>
+                <li>Highcharts</li>
+            </ul>
+            </p>
+        </div>
+    </div>
+{% endblock content %}

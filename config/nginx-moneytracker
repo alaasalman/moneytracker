@@ -1,0 +1,40 @@
+upstream moneytracker_djangoapp {
+    server localhost:8001 fail_timeout=0;
+}
+
+server {
+    listen         80;
+    server_name  moneytracker.codedemigod.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443;
+    ssl on;
+    ssl_certificate /etc/letsencrypt/live/moneytracker.codedemigod.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/moneytracker.codedemigod.com/privkey.pem;
+    server_name  moneytracker.codedemigod.com;
+    # add Strict-Transport-Security to prevent man in the middle attacks
+    add_header Strict-Transport-Security "max-age=31536000";
+    
+    access_log  /home/moneytracker/logs/access.log;
+    error_log  /home/moneytracker/logs/error.log info;
+    
+    keepalive_timeout 5;  
+
+    root /home/moneytracker/static/;
+
+    location / {
+    proxy_set_header  X-Real-IP  $remote_addr;
+	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header Host $http_host;
+	proxy_set_header X-Forwarded-Proto $scheme;
+	proxy_redirect off;
+	proxy_pass http://moneytracker_djangoapp;
+    }
+
+    location /static/ {
+	alias /home/moneytracker/static/;
+	autoindex on;
+    }
+}

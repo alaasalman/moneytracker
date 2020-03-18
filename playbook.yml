@@ -1,0 +1,51 @@
+---
+# include all vars
+- hosts: mylinode
+  become: yes
+  tasks:
+    - include_vars: "{{ item }}"
+      with_items:
+        - project_vars.yml
+      tags:
+        - always
+
+# frontend
+- hosts: mylinode
+  tasks:
+    - name: rsync bundles
+      synchronize:
+        src: walletweb/static/bundles
+        dest: "$HOME"
+        partial: yes
+
+# manage app deployment
+- hosts: mylinode
+  become: yes
+  become_user: "{{ app_user }}"
+  tasks:
+    - name: Update git repo
+      shell: git pull
+      args:
+        chdir: "{{ app_src_path }}"
+
+    - name: django-manage migrate
+      shell: pipenv run ./manage.py migrate
+      args:
+        chdir: "{{ app_src_path }}"
+
+    - name: move JS bundles
+      shell: cp -r '/home/alaa/bundles/' '{{ app_src_path }}/walletweb/static'
+
+    - name: django-manage collectstatic
+      shell: pipenv run ./manage.py collectstatic --clear --noinput
+      args:
+        chdir: "{{ app_src_path }}"
+
+# manage server app deployment
+- hosts: mylinode
+  become: yes
+  tasks:
+    - name: Restart gunicorn via supervisor
+      supervisorctl:
+        name: moneytracker
+        state: restarted
