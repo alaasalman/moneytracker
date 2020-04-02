@@ -10,7 +10,7 @@ from rest_framework import generics
 from rest_framework import permissions
 from rest_framework import authentication
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
 
@@ -29,7 +29,7 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
                               authentication.SessionAuthentication]
     queryset = models.Transaction.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = {
+    filterset_fields = {
         'amount': ['lte', 'gte'],
         'date': ['lte', 'gte']
     }
@@ -40,7 +40,7 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
         transaction_qs_filtered = api_filters.TransactionFilter(self.request.GET, queryset=transaction_qs)
         return transaction_qs_filtered.qs
 
-    @list_route(url_path='chart-data-monthly')
+    @action(detail=False, url_path='chart-data-monthly')
     def chart_data_monthly(self, request):
         transaction_qs = self.get_queryset()
 
@@ -67,7 +67,7 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
             'data': [trans_sum_dict[trans_sum_key] for trans_sum_key in trans_keys_sorted_list]
         })
 
-    @list_route(url_path='chart-data-yearly')
+    @action(detail=False, url_path='chart-data-yearly')
     def chart_data_yearly(self, request):
         transaction_qs = self.get_queryset()
 
@@ -89,7 +89,7 @@ class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
             'data': [trans_sum_dict[trans_sum_key] for trans_sum_key in trans_keys_sorted_list]
         })
 
-    @list_route(url_path='chart-data-pie')
+    @action(detail=False, url_path='chart-data-pie')
     def chart_data_pie(self, request):
         transaction_qs = self.get_queryset()
         trans_sum_dict = collections.defaultdict(float)

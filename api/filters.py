@@ -5,7 +5,7 @@ from walletweb import models
 
 
 class TransactionFilter(filters.FilterSet):
-    tags__have = filters.CharFilter(name='tags', method='tags_have_filter')
+    tags__have = filters.CharFilter(field_name='tags', method='tags_have_filter')
 
     class Meta:
         model = models.Transaction
