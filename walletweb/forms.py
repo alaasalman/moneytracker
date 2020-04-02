@@ -4,7 +4,7 @@ from django import forms
 
 from taggit.forms import TagField
 
-from registration.forms import RegistrationForm
+from django_registration.forms import RegistrationForm
 from walletweb import models
 
 logger = logging.getLogger('moneytracker')

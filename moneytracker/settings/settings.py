@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'import_export',
     'django_filters',
+    'django_registration',
     'axes',
     'anymail',
     'walletweb'

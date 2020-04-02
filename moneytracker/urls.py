@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path
 
-from registration.backends.hmac.views import RegistrationView
+from django_registration.views import RegistrationView
 
 from walletweb.forms import MTRegistrationForm
 from walletweb.views import anonymous
@@ -26,7 +26,10 @@ urlpatterns = [
         name='registration_register'),
 
     url(r'^accounts/',
-        include('registration.backends.hmac.urls')),
+        include('django_registration.backends.activation.urls')),
+
+    path('accounts/',
+         include('django.contrib.auth.urls')),
 
     url(r'^wallet/',
         include('walletweb.urls')),
