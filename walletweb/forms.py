@@ -4,7 +4,7 @@ from django import forms
 
 from taggit.forms import TagField
 
-from django_registration.forms import RegistrationForm
+from django_registration.forms import RegistrationFormUniqueEmail
 from walletweb import models
 
 logger = logging.getLogger('moneytracker')
@@ -45,7 +45,7 @@ class AccountForm(forms.ModelForm):
         fields = ['name', 'currency']
 
 
-class MTRegistrationForm(RegistrationForm):
+class MTRegistrationForm(RegistrationFormUniqueEmail):
     class Meta:
         model = models.WalletyUser
         fields = ['email', 'first_name', 'last_name']
