@@ -3,12 +3,7 @@ from factory.django import DjangoModelFactory
 
 from walletweb import models
 
-
-class UserFactory(DjangoModelFactory):
-    class Meta:
-        model = models.WalletyUser
-
-    email = factory.Faker('email')
+DEFAULT_PASSWORD = 'default_123_password'
 
 
 class CurrencyFactory(DjangoModelFactory):
@@ -20,13 +15,28 @@ class CurrencyFactory(DjangoModelFactory):
     rate = factory.Faker('pyfloat')
 
 
+class MTUserFactory(DjangoModelFactory):
+    class Meta:
+        model = models.WalletyUser
+
+    email = factory.Faker('email')
+    password = factory.PostGenerationMethodCall('set_password', DEFAULT_PASSWORD)
+
+
+class UserProfileFactory(DjangoModelFactory):
+    class Meta:
+        model = models.UserProfile
+
+    display_currency = factory.SubFactory(CurrencyFactory)
+
+
 class AccountFactory(DjangoModelFactory):
     class Meta:
         model = models.Account
 
     name = factory.Faker('word')
     currency = factory.SubFactory(CurrencyFactory)
-    user = factory.SubFactory(UserFactory)
+    user = factory.SubFactory(MTUserFactory)
 
 
 class TransactionFactory(DjangoModelFactory):

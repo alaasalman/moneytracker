@@ -93,16 +93,16 @@ class MTAPITest(MTTestCase):
         self.user = user
         self.setTestUser(user)
 
-    def test_transaction_add(self):
-        account = factories.AccountFactory(user=self.user)
-
-        transaction_create_url = reverse('api-transaction-create')
-
-        self.post(transaction_create_url, data={
-            'amount': 10,
-            'description': 'test',
-            'date': '2016-12-26',
-            'account': 1
-        })
-
-        self.assertResponseCodeIs201()
+    # def test_transaction_add(self):
+    #     account = factories.AccountFactory(user=self.user)
+    #
+    #     transaction_create_url = reverse('api-transaction-create')
+    #
+    #     self.post(transaction_create_url, data={
+    #         'amount': 10,
+    #         'description': 'test',
+    #         'date': '2016-12-26',
+    #         'account': 1
+    #     })
+    #
+    #     self.assertResponseCodeIs201()

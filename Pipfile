@@ -21,6 +21,7 @@ django-anymail = "~=7.0"
 ipython = "*"
 sentry-sdk = "~=0.14"
 scikit-learn = "*"
+factory-boy = "~=2.12"
 
 [dev-packages]
 "fabric3" = "*"
