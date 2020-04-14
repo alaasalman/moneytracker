@@ -71,7 +71,7 @@ class AccountUpdateView(mixins.LoginRequiredMixin,
 
     def form_invalid(self, form):
         aufi_resp = super().form_invalid(form)
-        messages.error(self.form, 'Problem in updating account')
+        messages.error(self.request, 'Problem in updating account')
 
         return aufi_resp
 
