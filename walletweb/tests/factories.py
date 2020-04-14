@@ -47,3 +47,5 @@ class TransactionFactory(DjangoModelFactory):
     amount = factory.Faker('pyfloat')
     description = factory.Faker('sentence', nb_words=10, variable_nb_words=True)
     date = factory.Faker('date_time_between', start_date='-7d', end_date='+7d')
+    currency = factory.SubFactory(CurrencyFactory)
+    user = factory.SubFactory(MTUserFactory)

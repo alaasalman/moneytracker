@@ -29,6 +29,7 @@ urlpatterns = [
         views.TransactionListView.as_view(),
         name='transaction_list'),
 
+    # list all transactions related to user - no account filtering
     url(r'transaction/list/$',
         views.TransactionListView.as_view(),
         name='transaction_list_all'),

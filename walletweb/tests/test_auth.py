@@ -8,6 +8,11 @@ from .utilities import MTTestCase
 
 
 class TestAuthAccounts(MTTestCase):
+
+    def setUp(self):
+        # bypass the MTTestCase setUp otherwise any redirections will lead to user-specific pages
+        pass
+
     def test_can_visit_register_page(self):
         """
         User can navigate to registration page and the registration template is used that shows a form
