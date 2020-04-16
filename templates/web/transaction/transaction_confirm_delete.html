@@ -1,19 +1,18 @@
 {% extends 'web/base.html' %}
 
 {% block title %}
-  Delete Transaction
+Delete Transaction
 {% endblock %}
 
 {% block content %}
-    <p>Are you sure you want to delete this transaction?</p>
-    <div>
-        <form method="post">
-          {% csrf_token %}
-            <input class="button is-danger is-pulled-left" type="submit" value="Yes"/>
-        </form>
-
-        <form method="get" action="{{ returnurl }}">
-            <input class="button" type="submit" value="No"/>
-        </form>
-    </div>
+<div class="columns is-vcentered">
+  <div class="column is-narrow"><span>Are you sure you want to delete this transaction?</span></div>
+  <div class="column has-text-left">
+    <form method="post" class="is-inline-block">
+      {% csrf_token %}
+      <input class="button is-danger" type="submit" value="Yes">
+    </form>
+    <a href="{{ returnurl }}" class="button is-light">No</a>
+  </div>
+</div>
 {% endblock content %}
