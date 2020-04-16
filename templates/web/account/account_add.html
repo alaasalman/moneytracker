@@ -1,17 +1,21 @@
 {% extends 'web/base.html' %}
 
 {% block title %}
-  Add Account
+Add Account
 {% endblock %}
 
 {% block content %}
+<div class="columns">
+  <div class="column is-6">
     <form method='post' class="">
       {% csrf_token %}
 
       {% include "generic_snippets/form_snippet.html" with form=form %}
 
-        <div class="form-actions">
-            <input class="button" type='submit' value='Add'/>
-        </div>
+      <div class="form-actions">
+        <input class="button is-primary" type='submit' value='Add'/>
+      </div>
     </form>
+  </div>
+</div>
 {% endblock content %}

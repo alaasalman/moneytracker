@@ -1,54 +1,60 @@
 {% load widget_tweaks %}
 
 {% if form.non_field_errors %}
-    <div class="notification is-danger">
-      {% for err in form.non_field_errors %}
-          <div>{{ err }}</div>
-      {% endfor %}
-    </div>
+<div class="notification is-danger">
+  {% for err in form.non_field_errors %}
+  <div>{{ err }}</div>
+  {% endfor %}
+</div>
 {% endif %}
 
 {% for field in form.visible_fields %}
-  {% if field.name in form.Meta.norender %}
-      <p></p>
-  {% else %}
-      <div class="field is-horizontal {% if field.errors %}is-danger{% endif %}">
-          <div class="field-label">
-              <label class="label">{{ field.label }}</label>
-          </div>
-          <div class="field-body">
-              <div class="field">
-                  <div class="control">
-                    {% if field|field_type == 'charfield' %}
-                      {{ field|add_class:"input" }}
-                    {% elif field|field_type == 'modelchoicefield' %}
-                        <div class="select">
-                          {{ field }}
-                        </div>
-                    {% elif field|field_type == 'datefield' %}
-                        <div class="cdate">
-                            <datepicker
-                                    id="{{ field.id }}"
-                                    name="{{ field.name }}"
-                                    placeholder="{{ field.verbose_name }}"
-                                    value="{{ field.initial.isoformat|default_if_none:'' }}"
-                                    v-bind:config="{ dateFormat: 'Y-m-d', static: true }">
-                            </datepicker>
-                        </div>
-                    {% elif field|field_type == 'floatfield' %}
-                      {{ field|add_class:"input" }}
-                    {% elif field|field_type == 'usernamefield' %}
-                      {{ field|add_class:"input" }}
-                    {% else %}
-                      {{ field }}
-                        {% comment %}
-              {{ field|widget_type }}
-            {% endcomment %}
-                    {% endif %}
-                  </div>
-                  <p class="help is-danger">{{ field.errors|join:", " }}</p>
-              </div>
-          </div>
+{% if field.name in form.Meta.norender %}
+<p></p>
+{% else %}
+
+<div class="field is-horizontal {% if field.errors %}is-danger{% endif %}">
+  <div class="field-label is-normal has-text-left">
+    <label class="label">{{ field.label }}</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        {% if field|field_type == 'charfield' %}
+        {{ field|add_class:"input" }}
+        {% elif field|field_type == 'modelchoicefield' %}
+        <div class="select">
+          {{ field }}
+        </div>
+        {% elif field|field_type == 'datefield' %}
+        <div class="cdate">
+          <datepicker
+              id="{{ field.id }}"
+              name="{{ field.name }}"
+              placeholder="{{ field.verbose_name }}"
+              value="{{ field.initial.isoformat|default_if_none:'' }}"
+              v-bind:config="{ dateFormat: 'Y-m-d', static: true }">
+          </datepicker>
+        </div>
+        {% elif field|field_type == 'floatfield' %}
+        {{ field|add_class:"input" }}
+        {% elif field|field_type == 'usernamefield' %}
+        {{ field|add_class:"input" }}
+        {% elif field|field_type == 'emailfield' %}
+        {{ field|add_class:"input" }}
+        {% else %}
+        {{ field }}
+        {% comment %}
+        {{ field|widget_type }}
+        {% endcomment %}
+        {% endif %}
       </div>
-  {% endif %}
+      {% if field.errors %}
+      <p class="help is-danger">{{ field.errors|join:", " }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endfor %}
+

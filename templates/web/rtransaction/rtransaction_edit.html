@@ -2,20 +2,24 @@
 {% load render_bundle from webpack_loader %}
 
 {% block title %}
-  Edit Recurring Transaction
+Edit Recurring Transaction
 {% endblock %}
 
 {% block extrajs %}
-  {% render_bundle 'vcomponents' %}
+{% render_bundle 'vcomponents' %}
 {% endblock extrajs %}
 
 {% block content %}
+<div class="columns">
+  <div class="column is-6">
     <form method='post' class="form-horizontal">
       {% csrf_token %}
       {% include "generic_snippets/form_snippet.html" with form=form %}
 
-        <div class="form-actions">
-            <input class="button" type='submit' value='Update'/>
-        </div>
+      <div class="form-actions">
+        <input class="button is-primary" type='submit' value='Update'/>
+      </div>
     </form>
+  </div>
+</div>
 {% endblock content %}

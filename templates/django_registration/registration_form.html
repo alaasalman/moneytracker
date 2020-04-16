@@ -1,17 +1,18 @@
 {% extends 'anonbase.html' %}
 
 {% block content %}
-    <div>
-        <form class="form-horizontal" action="{{ site.domain_name }}/accounts/register/" method="post">
-          {% csrf_token %}
+<div class="columns">
+  <div class="column is-6">
+    <form class="form-horizontal" action="{{ site.domain_name }}/accounts/register/" method="post">
+      {% csrf_token %}
 
-          {% include "generic_snippets/form_snippet.html" with form=form %}
+      {% include "generic_snippets/form_snippet.html" with form=form %}
 
-            <div>
-                <input type="hidden" name="next" id="next" value="{{ next }}"/>
-                <input class="button" type="submit" value="Register"/>
-            </div>
-        </form>
-    </div>
-
+      <div>
+        <input type="hidden" name="next" id="next" value="{{ next }}"/>
+        <input class="button is-primary" type="submit" value="Register"/>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock content %}

@@ -1,17 +1,21 @@
 {% extends 'web/base.html' %}
 
 {% block title %}
-  Edit Account
+Edit Account
 {% endblock %}
 
 {% block content %}
+<div class="columns">
+  <div class="column is-6">
     <form method='post'>
       {% csrf_token %}
 
       {% include "generic_snippets/form_snippet.html" with form=form %}
 
-        <div>
-            <input class="button" type='submit' value='Update'/>
-        </div>
+      <div>
+        <input class="button is-primary" type='submit' value='Update'/>
+      </div>
     </form>
+  </div>
+</div>
 {% endblock content %}

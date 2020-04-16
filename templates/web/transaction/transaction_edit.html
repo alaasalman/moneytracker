@@ -3,7 +3,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block title %}
-  Edit Transaction
+Edit Transaction
 {% endblock %}
 
 {% block extracss %}
@@ -11,36 +11,40 @@
 {% endblock extracss %}
 
 {% block extrajs %}
-  {% render_bundle 'vcomponents' %}
+{% render_bundle 'vcomponents' %}
 {% endblock extrajs %}
 
 {% block content %}
+<div class="columns">
+  <div class="column is-6">
     <form method='post' class="form-horizontal">
       {% csrf_token %}
 
       {% include "generic_snippets/form_snippet.html" with form=form %}
-        <div class="field is-horizontal {% if form.tags.errors %}is-danger{% endif %}">
-            <div class="field-label">
-                <label class="label">Tags</label>
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <div class="tagmultiselect">
-                            <tag-multi-select
-                                    url="{% url 'api:api-tag-list' %}"
-                                    identifier="tags"
-                                    :initial-value="{{ tags_value }}">
-                            </tag-multi-select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <p class="help is-danger">{{ form.tags.errors|join:", " }}</p>
+      <div class="field is-horizontal {% if form.tags.errors %}is-danger{% endif %}">
+        <div class="field-label is-normal has-text-left">
+          <label class="label">Tags</label>
         </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control is-expanded">
+              <div class="tagmultiselect">
+                <tag-multi-select
+                    url="{% url 'api:api-tag-list' %}"
+                    identifier="tags"
+                    :initial-value="{{ tags_value }}">
+                </tag-multi-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="help is-danger">{{ form.tags.errors|join:", " }}</p>
+      </div>
 
-        <div class="form-actions">
-            <input class="button" type='submit' value='Update'/>
-        </div>
+      <div class="form-actions">
+        <input class="button is-primary" type='submit' value='Update'/>
+      </div>
     </form>
+  </div>
+</div>
 {% endblock content %}
