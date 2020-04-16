@@ -20,7 +20,6 @@ class AccountListView(mixins.LoginRequiredMixin,
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['account_list'] = models.Account.objects.filter(user=self.request.user)
         context['display_currency_sign'] = self.request.user.userprofile.display_currency.sign
 
         return context

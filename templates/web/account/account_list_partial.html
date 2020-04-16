@@ -36,7 +36,7 @@
                   {{ acct.balance|colorize_amount:display_currency_sign }}
                 </td>
                 <td>
-                  {{ acct.last_transaction_date }}
+                  {{ acct.last_transaction_date|default_if_none:"" }}
                 </td>
                 <td class="has-text-right">
 
