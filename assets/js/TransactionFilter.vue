@@ -12,11 +12,11 @@
         </header>
         <div class="card-content">
           <div class="field is-horizontal is-grouped">
-            <div class="field-label">
+            <div class="field-label is-normal">
               <label class="label">Between</label>
             </div>
             <div class="field-body">
-              <div class="columns">
+              <div class="columns is-vcentered">
                 <div class="column">
                   <div class="control">
                     <datepicker
@@ -46,7 +46,7 @@
                   >
                     <div class="dropdown-trigger">
                       <button
-                        class="button"
+                        class="button is-link is-rounded"
                         aria-haspopup="true"
                         aria-controls="dropdown-menu2"
                         @click.prevent="toggleFilters"
@@ -127,24 +127,30 @@
             v-if="hasAmountFilter"
             class="field is-horizontal is-narrow"
           >
-            <div class="field-label">
+            <div class="field-label is-normal">
               <label class="label">Amount &le;</label>
             </div>
             <div class="field-body">
-              <input
-                :value="amount"
-                type="number"
-                name="amount__lte"
-                class="input"
-              >
-              <a
-                class="button"
-                @click.prevent="deactivateFilter(1)"
-              >
+              <div class="columns">
+                <div class="column is-6">
+                  <input
+                    :value="amount"
+                    type="number"
+                    name="amount__lte"
+                    class="input"
+                  >
+                </div>
+                <div class="column is-offset-5">
+                  <a
+                    class="button"
+                    @click.prevent="deactivateFilter(1)"
+                  >
                 <span class="icon is-small">
                   <i class="fas fa-minus-circle"/>
                 </span>
-              </a>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -152,24 +158,30 @@
             v-if="hasDescriptionFilter"
             class="field is-horizontal is-narrow"
           >
-            <div class="field-label">
+            <div class="field-label is-normal">
               <label class="label">Description Contains</label>
             </div>
             <div class="field-body">
-              <input
-                :value="hasDescription"
-                type="text"
-                name="description__has"
-                class="input"
-              >
-              <a
-                class="button"
-                @click.prevent="deactivateFilter(2)"
-              >
+              <div class="columns">
+                <div class="column is-11">
+                  <input
+                    :value="hasDescription"
+                    type="text"
+                    name="description__has"
+                    class="input"
+                  >
+                </div>
+                <div class="column">
+                  <a
+                    class="button"
+                    @click.prevent="deactivateFilter(2)"
+                  >
                 <span class="icon is-small">
                   <i class="fas fa-minus-circle"/>
                 </span>
-              </a>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -177,49 +189,58 @@
             v-if="hasNotDescriptionFilter"
             class="field is-horizontal is-narrow"
           >
-            <div class="field-label">
+            <div class="field-label is-normal">
               <label class="label">Description doesn't Contain</label>
             </div>
             <div class="field-body">
-              <input
-                :value="hasNotDescription"
-                type="text"
-                name="description__hasnot"
-                class="input"
-              >
-              <a
-                class="button"
-                @click.prevent="deactivateFilter(3)"
-              >
+              <div class="columns">
+                <div class="column is-11">
+                  <input
+                    :value="hasNotDescription"
+                    type="text"
+                    name="description__hasnot"
+                    class="input"
+                  >
+                </div>
+                <div class="column">
+                  <a
+                    class="button"
+                    @click.prevent="deactivateFilter(3)">
                 <span class="icon is-small">
                   <i class="fas fa-minus-circle"/>
                 </span>
-              </a>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          v-if="hasTagsFilter"
-          class="field is-horizontal is-narrow"
-        >
-          <div class="field-label">
-            <label class="label">Tags Include</label>
-          </div>
-          <div class="field-body">
-            <tag-multi-select
-              :url="accountTagsUrl"
-              :initial-value="hasTags"
-              identifier="tags__have"
-            />
-            <a
-              class="button"
-              @click.prevent="deactivateFilter(4)"
-            >
+          <div
+            v-if="hasTagsFilter"
+            class="field is-horizontal is-narrow">
+            <div class="field-label is-normal">
+              <label class="label">Tags Include</label>
+            </div>
+            <div class="field-body">
+              <div class="columns">
+                <div class="column is-11">
+                  <tag-multi-select
+                    :url="accountTagsUrl"
+                    :initial-value="hasTags"
+                    identifier="tags__have"
+                  />
+                </div>
+                <div class="column is-1">
+                  <a
+                    class="button"
+                    @click.prevent="deactivateFilter(4)">
               <span class="icon is-small">
                 <i class="fas fa-minus-circle"/>
               </span>
-            </a>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -227,7 +248,7 @@
           <input
             type="submit"
             value="Filter"
-            class="button"
+            class="button is-link"
           >
         </footer>
       </form>
@@ -237,7 +258,7 @@
 
 <script>
   import Datepicker from 'vue-bulma-datepicker';
-  import { parse } from 'query-string';
+  import {parse} from 'query-string';
   import TagMultiSelect from './TagMultiSelect';
 
   export default {
@@ -265,7 +286,7 @@
         },
       },
     },
-    data () {
+    data() {
       return {
         isFiltersActive: false,
         hasAmountFilter: false,
