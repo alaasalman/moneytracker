@@ -10,11 +10,8 @@ import tablib
 
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views import generic as genericviews
-from django.views.generic.list import MultipleObjectMixin, BaseListView
-from django.http import HttpResponse
 from django.db.models import Sum, F
 from django.contrib import messages
 from django.contrib.auth import mixins
@@ -24,10 +21,8 @@ from taggit.models import Tag as TTag
 
 from moneytracker import settings
 from walletweb.forms import TransactionForm, ContactMeForm, TransactionUploadForm, TagForm
-from walletweb.models import Transaction, Account, Tag, TransactionTag, FileUpload
-from walletweb.templatetags.utiltags import colorize_amount
+from walletweb.models import Transaction, Account, Tag, FileUpload
 from walletweb.filters import TransactionFilter
-from walletweb.resources import TransactionResource
 
 
 logger = logging.getLogger('moneytracker')
@@ -54,46 +49,47 @@ class Dashboard(mixins.LoginRequiredMixin,
         context = super().get_context_data(**kwargs)
         user = self.request.user
         display_currency = user.userprofile.display_currency
+        date_today = date.today()
 
-        # for transactions this month
-        transactions_thismonth = Transaction.objects.filter(user=user,
-                                                            date__gte=date.today().replace(day=1))
+        # for transactions this month, get total made and spent
+        current_month_start = date_today.replace(day=1)
+        total_made_thismonth, total_spent_thismonth = Transaction.objects.made_spent_breakdown_for_daterange(user,
+                                                                                                             current_month_start,
+                                                                                                             date_today)
 
-        # breakdown by sign
-        positive_transactions = transactions_thismonth.filter(amount__gte=0)
-        negative_transactions = transactions_thismonth.filter(amount__lte=0)
+        context['total_made_thismonth'] = total_made_thismonth * display_currency.rate
+        context['total_spent_thismonth'] = total_spent_thismonth * display_currency.rate
 
-        total_made = positive_transactions.aggregate(trans_sum=Sum(F('amount') * F('currency__rate')))[
-                         'trans_sum'] or 0
-        total_spent = negative_transactions.aggregate(trans_sum=Sum(F('amount') * F('currency__rate')))[
-                          'trans_sum'] or 0
+        # for transactions last month, do the same
+        last_month_end = date_today - timedelta(days=date_today.day)
+        last_month_start = last_month_end.replace(day=1)
 
-        context['total_made'] = total_made * display_currency.rate
-        context['total_spent'] = total_spent * display_currency.rate
+        total_made_lastmonth, total_spent_lastmonth = Transaction.objects.made_spent_breakdown_for_daterange(user,
+                                                                                                             last_month_start,
+                                                                                                             last_month_end)
+        context['total_made_lastmonth'] = total_made_lastmonth * display_currency.rate
+        context['total_spent_lastmonth'] = total_spent_lastmonth * display_currency.rate
 
-        # breakdown by tag
-        tag_total_dict = {}
-        transactions_thismonth_idlist = [trans.id for trans in transactions_thismonth]
-        for trans in transactions_thismonth.all():
-            for transtag in trans.tags.all():
-                tag_total_dict[transtag] = 0.0
-
-        for tag in tag_total_dict.keys():
-            tag_total_dict[tag] = Transaction.objects.filter(id__in=transactions_thismonth_idlist, tags__in=[tag]).aggregate(
-                tag_sum=Sum(F('amount') * F('currency__rate')))['tag_sum']
-
-        untagged_tag = TTag(id=0, name='Untagged', slug='untagged')
-        tag_total_dict[untagged_tag] = \
-            Transaction.objects.filter(id__in=transactions_thismonth_idlist, tags__isnull=True).aggregate(
-                tag_sum=Sum(F('amount') * F('currency__rate')))['tag_sum']
+        # breakdown by tag for this month
+        tag_total_dict_thismonth = Transaction.objects.tag_total_for_daterange(user, current_month_start, date_today)
 
         # apply display currency
-        for k in tag_total_dict.keys():
-            tag_total_dict[k] = (tag_total_dict[k] or 0) * display_currency.rate
+        for tag_object, tag_total in tag_total_dict_thismonth.items():
+            tag_total_dict_thismonth[tag_object] = (tag_total or 0) * display_currency.rate
 
-        context['tag_total_dict'] = tag_total_dict
+        # and last month
+        tag_total_dict_lastmonth = Transaction.objects.tag_total_for_daterange(user, last_month_start, last_month_end)
+
+        # apply display currency
+        for tag_object, tag_total in tag_total_dict_lastmonth.items():
+            tag_total_dict_lastmonth[tag_object] = (tag_total or 0) * display_currency.rate
+
+        context['tag_total_dict_thismonth'] = tag_total_dict_thismonth
+        context['tag_total_dict_lastmonth'] = tag_total_dict_lastmonth
 
         context['display_currency_sign'] = display_currency.sign
+        context['this_month'] = date_today.strftime('%B')
+        context['last_month'] = date_today.replace(month=date_today.month - 1).strftime('%B')
 
         return context
 

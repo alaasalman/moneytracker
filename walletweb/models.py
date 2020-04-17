@@ -1,6 +1,9 @@
 import hashlib
 
 import math
+from collections import defaultdict
+from decimal import Decimal
+
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
 from django.contrib.postgres import fields as postgresfields
 from django.core import mail
@@ -11,6 +14,7 @@ from django.conf import settings
 from django.utils.text import slugify
 
 from taggit.managers import TaggableManager
+from taggit.models import Tag as TaggitTag
 
 
 class MTUserManager(BaseUserManager):
@@ -142,6 +146,62 @@ class Account(MTModel):
         db_table = 'walletweb_account'
 
 
+class TransactionManager(models.Manager):
+    def made_spent_breakdown_for_daterange(self, user, from_date, to_date):
+        """
+        Returns the total made and total spent for specified user and date range.
+        :param user: For specified user
+        :param from_date: Start from date
+        :param to_date: Ending at date
+        :return: tuple (made, spent)
+        """
+        # for transactions during a certain date range
+        transactions_forrange = Transaction.objects.filter(user=user,
+                                                            date__gte=from_date,
+                                                            date__lte=to_date)
+
+        # breakdown transactions for date range by sign
+        positive_transactions = transactions_forrange.filter(amount__gte=0)
+        negative_transactions = transactions_forrange.filter(amount__lte=0)
+
+        # sum them up
+        total_made = \
+            positive_transactions.aggregate(trans_sum=Sum(F('amount') * F('currency__rate')))[
+                'trans_sum'] or 0
+        total_spent = \
+            negative_transactions.aggregate(trans_sum=Sum(F('amount') * F('currency__rate')))[
+                'trans_sum'] or 0
+
+        return total_made, total_spent
+
+    def tag_total_for_daterange(self, user, from_date, to_date):
+        """
+        Returns a dictionary of grouping by tag and their summed transactions amounts.
+        :param user: For specified user
+        :param from_date: Start from date
+        :param to_date: Ending at date
+        :return: dict[Tag] = tag total amount
+        """
+
+        tags_withtotal = TaggitTag.objects.filter(transaction__user=user, transaction__date__gte=from_date,
+                                                  transaction__date__lte=to_date).annotate(
+            tag_total=Sum(F('transaction__amount') * F('transaction__currency__rate')))
+
+        tag_total_dict = {tag_object: tag_object.tag_total for tag_object in tags_withtotal}
+
+        # add special tagg called "untagged" to sum up transactions without tags
+        untagged_tag = TaggitTag(id=0, name='Untagged', slug='untagged')
+        untagged_user_transactions = Transaction.objects.filter(user=user,
+                                                                date__gte=from_date,
+                                                                date__lte=to_date,
+                                                                tags__isnull=True)
+
+        tag_total_dict[untagged_tag] = untagged_user_transactions.aggregate(
+            tag_total=Sum(F('amount') * F('currency__rate')))['tag_total']
+
+        return tag_total_dict
+
+
 class Transaction(MTModel):
     account = models.ForeignKey(Account,
                                 null=True,
@@ -164,6 +224,7 @@ class Transaction(MTModel):
     tags = TaggableManager(blank=False)
     extra = postgresfields.JSONField(verbose_name='Extra Information',
                                      null=True)
+    objects = TransactionManager()
 
     class Meta:
         ordering = ['-date', '-id']

@@ -2,30 +2,61 @@
 {% load utiltags %}
 
 {% block title %}
-  Index
+Dashboard
 {% endblock %}
 
 {% block content %}
-    <h1 class="title">Welcome {{ user.first_name }}</h1>
+<h1 class="title">Welcome {{ user.first_name|default:"Money Tracker" }}</h1>
 
-    <h4>This month you've:</h4>
-    <table class="table">
-        <tr>
-            <td>Spent:</td>
-            <td>{{ total_spent|colorize_amount:display_currency_sign }}</td>
-        </tr>
-        <tr>
-            <td>Made:</td>
-            <td>{{ total_made|colorize_amount:display_currency_sign }}</td>
-        </tr>
+<div class="columns">
+  <div class="column">
+    <h4>For the month of {{ this_month }} you've:</h4>
+    <table class="table is-fullwidth">
+      <tr>
+        <td>Spent:</td>
+        <td>{{ total_spent_thismonth|colorize_amount:display_currency_sign }}</td>
+      </tr>
+      <tr>
+        <td>Made:</td>
+        <td>{{ total_made_thismonth|colorize_amount:display_currency_sign }}</td>
+      </tr>
     </table>
+    {% if tag_total_dict_thismonth %}
     <h4>Here's the breakdown:</h4>
     <table class="table">
-      {% for tag, total in tag_total_dict.items %}
-          <tr>
-              <td>{{ tag.name }}</td>
-              <td>{{ total|colorize_amount:display_currency_sign }}</td>
-          </tr>
+      {% for tag, tag_total in tag_total_dict_thismonth.items %}
+      <tr>
+        <td>{{ tag.name }}</td>
+        <td>{{ tag_total|colorize_amount:display_currency_sign }}</td>
+      </tr>
       {% endfor %}
     </table>
+    {% endif %}
+  </div>
+  <div class="column">
+    <h4>Compared to last month {{ last_month }} where you've:</h4>
+    <table class="table is-fullwidth">
+      <tr>
+        <td>Spent:</td>
+        <td>{{ total_spent_lastmonth|colorize_amount:display_currency_sign }}</td>
+      </tr>
+      <tr>
+        <td>Made:</td>
+        <td>{{ total_made_lastmonth|colorize_amount:display_currency_sign }}</td>
+      </tr>
+    </table>
+    {% if tag_total_dict_lastmonth %}
+    <h4>Here's the breakdown:</h4>
+    <table class="table">
+      {% for tag, tag_total in tag_total_dict_lastmonth.items %}
+      <tr>
+        <td>{{ tag.name }}</td>
+        <td>{{ tag_total|colorize_amount:display_currency_sign }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+  </div>
+</div>
+
 {% endblock content %}
