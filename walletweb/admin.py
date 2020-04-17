@@ -62,7 +62,3 @@ class UserProfileAdmin(admin.ModelAdmin):
 class FileUploadAdmin(admin.ModelAdmin):
     list_display = ['user', 'uploadtype', 'created_at']
 
-
-@admin.register(models.TransactionTag)
-class TransactionTagAdmin(admin.ModelAdmin):
-    pass

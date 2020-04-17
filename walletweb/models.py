@@ -293,19 +293,20 @@ class Tag(MTModel):
 
 
 # no longer used after introducing taggit
-class TransactionTag(MTModel):
-    transaction = models.ForeignKey(Transaction,
-                                    related_name='transactiontags',
-                                    on_delete=models.CASCADE)
-    tag = models.ForeignKey(Tag,
-                            related_name='tagtransactions',
-                            on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'walletweb_transactiontag'
-
-    def __str__(self):
-        return 'Tag %s for Trans %s' % (self.tag, self.transaction)
+# write a migration to remove the table, the data has already been migrated
+# class TransactionTag(MTModel):
+#     transaction = models.ForeignKey(Transaction,
+#                                     related_name='transactiontags',
+#                                     on_delete=models.CASCADE)
+#     tag = models.ForeignKey(Tag,
+#                             related_name='tagtransactions',
+#                             on_delete=models.CASCADE)
+#
+#     class Meta:
+#         db_table = 'walletweb_transactiontag'
+#
+#     def __str__(self):
+#         return 'Tag %s for Trans %s' % (self.tag, self.transaction)
 
 
 class RecurringTransaction(MTModel):
