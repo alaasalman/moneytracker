@@ -3,3 +3,8 @@
     right: 0.5rem;
     top: 0.5rem;
 }
+
+.mt-is-required:after {
+  content:" *";
+  color:red;
+}
