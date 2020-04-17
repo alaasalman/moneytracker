@@ -1,11 +1,11 @@
-<div class="pull-right">
-    <ul class="pagination">
+<nav class="pagination is-right" role="navigation" aria-label="pagination">
+    <ul class="pagination-list">
       {% if firstlink %}
-          <li><a href="?{{ firstlink }}" title="First Page">&laquo; First</a></li>
+          <li><a href="?{{ firstlink }}" title="First Page" class="pagination-previous">&laquo; First</a></li>
       {% endif %}
 
       {% if page_obj.has_previous %}
-          <li><a href="?{{ prevlink }}" title="Previous Page">&lt; Previous</a></li>
+          <li><a href="?{{ prevlink }}" title="Previous Page" class="pagination-previous">&lt; Previous</a></li>
       {% endif %}
 
       {% for link in pagelinks %}
@@ -13,11 +13,11 @@
       {% endfor %}
 
       {% if page_obj.has_next %}
-          <li><a href="?{{ nextlink }}" title="Next Page">Next &gt;</a></li>
+          <li><a href="?{{ nextlink }}" title="Next Page" class="pagination-next">Next &gt;</a></li>
       {% endif %}
 
       {% if lastlink %}
-          <li><a href="?{{ lastlink }}" title="Last Page">Last &raquo;</a></li>
+          <li><a href="?{{ lastlink }}" title="Last Page" class="pagination-next">Last &raquo;</a></li>
       {% endif %}
     </ul>
-</div>
+</nav>
