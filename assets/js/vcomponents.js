@@ -2,17 +2,10 @@ import Vue from 'vue';
 import Datepicker from 'vue-bulma-datepicker';
 import VueCsvImport from 'vue-csv-import';
 import TagMultiSelect from './TagMultiSelect';
-import TransactionChart from './TransactionChart';
 import HeaderSorter from './HeaderSorter';
-
-Vue.config.delimiters = ['[[', ']]'];
 
 Vue.component('tag-multi-select', {
   extends: TagMultiSelect,
-});
-
-Vue.component('transaction-chart', {
-  extends: TransactionChart,
 });
 
 Vue.component('header-sorter', {
@@ -28,10 +21,6 @@ new Vue({
 
 new Vue({
   el: '.tagmultiselect',
-});
-
-new Vue({
-  el: '#vue-chart-container',
 });
 
 new Vue({

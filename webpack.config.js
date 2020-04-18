@@ -9,6 +9,7 @@ module.exports = {
     main: './assets/js/main.js',
     filter: './assets/js/filter.js',
     vcomponents: './assets/js/vcomponents.js',
+    vcharts: './assets/js/vcharts.js',
   },
   output: {
     path: path.resolve('walletweb/static/bundles/'),
