@@ -1,5 +1,6 @@
 import factory
 from factory.django import DjangoModelFactory
+from factory.fuzzy import FuzzyChoice
 
 from walletweb import models
 
@@ -49,3 +50,13 @@ class TransactionFactory(DjangoModelFactory):
     date = factory.Faker('date_time_between', start_date='-7d', end_date='+7d')
     currency = factory.SubFactory(CurrencyFactory)
     user = factory.SubFactory(MTUserFactory)
+
+
+class TransactionFileUploadFactory(DjangoModelFactory):
+    class Meta:
+        model = models.FileUpload
+
+    user = factory.SubFactory(MTUserFactory)
+    name = factory.Faker('word')
+    uploadtype = FuzzyChoice(models.FileUpload.UPLOAD_TYPE, getter=lambda c: c[0])
+    processed = factory.Faker('boolean')

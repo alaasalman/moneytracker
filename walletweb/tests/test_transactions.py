@@ -106,4 +106,22 @@ class TestTransactions(MTTestCase):
         # expect a 404 for a transaction that isn't theirs
         self.assertEqual(response.status_code, 404)
 
+    def test_transaction_upload(self):
+        """
+        User can visit upload page, and with a single upload
+        """
+        factories.TransactionFileUploadFactory(user=self.first_test_user)
+
+        response = self.client.get(reverse('transaction_upload'))
+        self.assertEqual(response.status_code, 200)
+
+        # right template used
+        self.assertTemplateUsed('web/transaction/transaction_upload.html')
+
+        # file list sent to template should have one entry
+        uploaded_file_list = response.context['uploaded_file_list']
+
+        self.assertEqual(len(uploaded_file_list), 1)
+
+
 # test transactions - with/without filter

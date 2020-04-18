@@ -40,7 +40,7 @@ urlpatterns = [
 
     url(r'transaction/upload/$',
         views.TransactionUploadView.as_view(),
-        name='transaction-upload'),
+        name='transaction_upload'),
 
     url(r'account/list/$',
         walletweb.views.account_views.AccountListView.as_view(),
