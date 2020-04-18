@@ -123,8 +123,8 @@ Upload Transactions
       <td>
         {{ upload_file.processed }}
       </td>
-      <td class="is-pulled-right">
-        <a href='{% url 'transaction_upload_delete' upload_file.id %}">
+      <td class="has-text-right">
+        <a href="{% url 'transaction_upload_delete' upload_file.id %}">
         <span class="icon">
                                 <i class="fas fa-trash"></i>
                             </span>
