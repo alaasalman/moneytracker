@@ -1,14 +1,8 @@
 from datetime import date, timedelta, datetime
-import math
-import json
-import collections
 import logging
 from os import path
 import uuid
 
-import tablib
-
-from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views import generic as genericviews
@@ -16,8 +10,6 @@ from django.db.models import Sum, F
 from django.contrib import messages
 from django.contrib.auth import mixins
 from django.urls import reverse
-
-from taggit.models import Tag as TTag
 
 from moneytracker import settings
 from walletweb.forms import TransactionForm, ContactMeForm, TransactionUploadForm, TagForm
@@ -401,9 +393,6 @@ class TransactionUploadView(mixins.LoginRequiredMixin,
         account_id = form.data.get('account')
         fupload.account = get_object_or_404(Account, pk=account_id)
         fupload.save()
-
-        # imported_data = tablib.Dataset().load(open(csv_fullpath_destination).read(), format='csv')
-        # result = TransactionResource.import_data(imported_data, dry_run=True)
 
         fv_resp = super().form_valid(form)
         messages.success(self.request, 'Transactions file uploaded and will be processed in a few minutes')
