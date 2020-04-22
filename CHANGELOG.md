@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [1.0.2] - 2020-04-22
+### Changed
+- Split up the Vue components and removed the charts into their own bundle to make the bundles smaller.
+- General fixes for typos and styles.
+
 ## [1.0.1] - 2020-04-17
 ### Added
 - Added this changelog to start keeping track of releases and functionality.
