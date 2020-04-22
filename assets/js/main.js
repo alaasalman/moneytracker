@@ -10,7 +10,7 @@ import {
   faInfo, faEnvelope, faCheck,
   faMinusCircle, faPlusSquare, faSort,
   faSortDown, faSortUp, faAngleDown,
-  faList,
+  faList, faBlog
 } from '@fortawesome/free-solid-svg-icons';
 
 Vue.config.delimiters = ['[[', ']]'];
@@ -22,7 +22,7 @@ library.add(
   faInfo, faEnvelope, faCheck,
   faMinusCircle, faPlusSquare, faSort,
   faSortDown, faSortUp, faAngleDown,
-  faList,
+  faList, faBlog
 );
 // will automatically find any <i> tags in the page and replace those with <svg> elements
 dom.watch(); // This will kick of the initial replacement of i to svg tags and configure a MutationObserver
